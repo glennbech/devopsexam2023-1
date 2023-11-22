@@ -18,8 +18,6 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: Navigate to SAM application directory
-        run: cd eksamen_2023/kjell
 
       - name: Install SAM CLI
         run: |
