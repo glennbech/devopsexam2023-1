@@ -24,6 +24,7 @@ jobs:
 
       - name: Build and deploy SAM application
         run: |
+          cd ../../kjell
           sam build
           sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM
 
