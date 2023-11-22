@@ -26,3 +26,4 @@ jobs:
         run: |
           sam build
           sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM
+
