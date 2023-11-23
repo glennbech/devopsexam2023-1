@@ -17,9 +17,17 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
-
+          
+          
+      - name: Print repository contents
+        run: ls -R
+      
       - name: Navigate to SAM application directory
         run: cd eksamen_2023/kjell
+        
+        - name: Print current working directory
+        run: pwd
+
 
       - name: Install SAM CLI
         run: |
