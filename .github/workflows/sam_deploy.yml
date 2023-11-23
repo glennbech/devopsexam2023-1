@@ -22,10 +22,7 @@ jobs:
         run: ls -R
 
       - name: Navigate to SAM application directory
-        run: cd ./kjell
-        
-      - name: Print repository contents
-        run: ls -R
+        run: cd /kjell
 
       - name: Print current working directory
         run: pwd
