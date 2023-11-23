@@ -32,7 +32,8 @@ jobs:
           pip install aws-sam-cli
 
       - name: Build SAM application
-        run: sam build
+        run: sam build -t kjell/template.yaml
 
       - name: Deploy SAM application
-        run: sam deploy --no-confirm-changeset --capabilities CAPABILITY_IAM
+        run: sam deploy -t kjell/template.yaml --no-confirm-changeset --capabilities CAPABILITY_IAM
+
