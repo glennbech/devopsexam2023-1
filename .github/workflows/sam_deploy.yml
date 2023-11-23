@@ -23,6 +23,9 @@ jobs:
 
       - name: Navigate to SAM application directory
         run: cd ./kjell
+        
+        - name: Print repository contents
+        run: ls -R
 
       - name: Print current working directory
         run: pwd
