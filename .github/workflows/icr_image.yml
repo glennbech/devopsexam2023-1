@@ -28,7 +28,7 @@ jobs:
       run: |
         COMMIT_HASH=$(git rev-parse --short=8 HEAD)
         IMAGE_URI=your-account-id.dkr.ecr.your-region.amazonaws.com/your-ecr-repo
-        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:latest
       if: github.event_name == 'workflow_run' && github.event.workflow == 'SAM Deploy' && github.event.workflow_run.conclusion == 'success'
