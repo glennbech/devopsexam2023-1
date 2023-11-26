@@ -34,4 +34,6 @@ jobs:
         docker tag $IMAGE_URI:$GITHUB_SHA $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:$COMMIT_HASH
         docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:latest
