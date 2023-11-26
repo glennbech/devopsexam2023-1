@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - test
 
 jobs:
   build:
@@ -30,9 +29,9 @@ jobs:
     - name: Push Docker image to ECR
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: |
-        docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA
-        docker tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA
-        docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA
-
-        docker tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:latest
-        docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:latest
+        COMMIT_HASH=$(git rev-parse --short=8 $GITHUB_SHA)
+        IMAGE_URI=244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037
+        docker tag $IMAGE_URI:$GITHUB_SHA $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:$COMMIT_HASH
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
+        docker push $IMAGE_URI:latest
