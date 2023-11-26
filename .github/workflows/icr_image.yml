@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
+<<<<<<< HEAD
       - test
+=======
+>>>>>>> main
 
 jobs:
   build:
