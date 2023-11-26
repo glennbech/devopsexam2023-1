@@ -23,6 +23,9 @@ jobs:
     - name: Build Docker image
       run: docker build -t 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA .
 
+    - name: Authenticate Docker with ECR
+      run: aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com
+
     - name: Push Docker image to ECR
       if: github.ref == 'refs/heads/main'
       run: |
