@@ -1,10 +1,9 @@
 name: Build and Publish to ECR
 
 on:
-  workflow_run:
-    workflows: ["SAM Deploy"]
-    types:
-      - completed
+  push:
+    branches:
+      - main
 
 jobs:
   build:
@@ -25,8 +24,8 @@ jobs:
       run: docker build -t 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA .
 
     - name: Push Docker image to ECR
+      if: github.ref == 'refs/heads/main'
       run: |
         docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA
         docker tag 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:latest
         docker push 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:latest
-      if: github.event_name == 'workflow_run' && github.event.workflow == 'SAM Deploy' && github.event.workflow_run.conclusion == 'success'
