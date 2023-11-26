@@ -1,0 +1,31 @@
+name: Build and Publish to ECR
+
+on:
+  workflow_run:
+    workflows: ["SAM Deploy"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
+    - name: Build and Push Docker image
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        COMMIT_HASH=$(git rev-parse --short=8 HEAD)
+        IMAGE_URI=your-account-id.dkr.ecr.your-region.amazonaws.com/your-ecr-repo
+        docker build -t $IMAGE_URI:$COMMIT_HASH .
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
+        docker push $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:latest
