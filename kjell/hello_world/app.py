@@ -6,16 +6,8 @@ import os
 s3_client = boto3.client('s3', region_name=os.environ.get('AWS_REGION', 'eu-west-1'))
 rekognition_client = boto3.client('rekognition', region_name=os.environ.get('AWS_REGION', 'eu-west-1'))
 
-<<<<<<< HEAD
-s3_client = boto3.client('s3', region_name='eu-west-1')
-rekognition_client = boto3.client('rekognition', region_name='eu-west-1')
-
-# Oppgave 1A
-BUCKET_NAME = "bucket2037" ##bucket navnnnn
-=======
 # BUCKET_NAME should be set as an environment variable
 BUCKET_NAME = os.environ.get('BUCKET_NAME')
->>>>>>> main
 
 def lambda_handler(event, context):
 
@@ -47,4 +39,4 @@ def lambda_handler(event, context):
 
 print(lambda_handler(None, None))
 
-####
+#####
