@@ -39,9 +39,9 @@ jobs:
         docker push $IMAGE_URI:latest
         
     
-    deploy_with_terraform:
-    
-    needs: build-and-publish
+   deploy_with_terraform:
+   
+    needs: build
     runs-on: ubuntu-latest
 
     steps:
