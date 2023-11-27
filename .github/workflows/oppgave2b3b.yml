@@ -1,0 +1,84 @@
+name: Build and Publish to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: eu-west-1
+
+    - name: Build Docker image
+      run: docker build -t 244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037:$GITHUB_SHA .
+
+    - name: Authenticate Docker with ECR
+      run: aws ecr get-login-password --region eu-west-1 | docker login --username AWS --password-stdin 244530008913.dkr.ecr.eu-west-1.amazonaws.com
+
+    - name: Push Docker image to ECR
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: |
+        COMMIT_HASH=$(git rev-parse --short=8 $GITHUB_SHA)
+        IMAGE_URI=244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037
+        docker tag $IMAGE_URI:$GITHUB_SHA $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:$COMMIT_HASH
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:latest
+        docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:$COMMIT_HASH
+        docker push $IMAGE_URI:latest
+        
+    
+    deploy_with_terraform:
+    
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up AWS credentials for Terraform
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Check if on main branch
+        run: |
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" != "refs/heads/main" ]; then
+            echo "Terraform will only run on the main branch. Exiting..."
+            exit 0
+          fi
+        shell: bash
+
+      - name: Configure Terraform
+        run: |
+          mkdir -p ~/.terraform
+          echo 'terraform {
+            backend "s3" {
+              bucket = "bucket2037"
+              key    = "eksamen_2023/infra/terraform.tfstate"
+              region = "eu-west-1"
+            }
+          }' > main.tf
+        working-directory: ${{ github.workspace }}
+
+      - name: Initialize Terraform
+        run: terraform init
+        working-directory: ${{ github.workspace }}
+
+      - name: Apply Terraform changes
+        run: terraform apply -auto-approve
+        working-directory: ${{ github.workspace }}

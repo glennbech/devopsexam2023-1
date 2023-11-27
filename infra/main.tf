@@ -2,13 +2,23 @@ variable "kandidatnummer" {
   default = "2037"
 }
 
+terraform {
+  backend "s3" {
+    bucket         = "bucket2037"
+    key            = "eksamen_2023/infra/terraform.tfstate"
+    region         = "eu-west-1"
+    encrypt        = true
+  }
+}
+
+
 resource "aws_apprunner_service" "service" {
   service_name = "apprunner-${var.kandidatnummer}"
 
   instance_configuration {
     instance_role_arn = aws_iam_role.role_for_apprunner_service.arn
-    cpu    = "1024" # Ønsket CPU-verdi Oppgave 3A
-    memory = "2048" # Ønsket minneverdi Oppgave 3A
+    cpu    = "256" # Ønsket CPU-verdi Oppgave 3A
+    memory = "1024" # Ønsket minneverdi Oppgave 3A
   }
 
   source_configuration {
@@ -27,7 +37,7 @@ resource "aws_apprunner_service" "service" {
 }
 
 resource "aws_iam_role" "role_for_apprunner_service" {
-  name               = "2037-role"
+  name               = "kandidat2037-role"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
 
@@ -66,7 +76,7 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_iam_policy" "policy" {
-  name        = "2037-apr-policy"
+  name        = "kandidat2037-apr-policy"
   description = "Policy for apprunner instance I think"
   policy      = data.aws_iam_policy_document.policy.json
 }
