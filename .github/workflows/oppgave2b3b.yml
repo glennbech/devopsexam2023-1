@@ -37,10 +37,8 @@ jobs:
         docker tag $IMAGE_URI:$COMMIT_HASH $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:$COMMIT_HASH
         docker push $IMAGE_URI:latest
-        
-    
-   deploy_with_terraform:
-   
+
+  deploy_with_terraform:
     needs: build
     runs-on: ubuntu-latest
 
