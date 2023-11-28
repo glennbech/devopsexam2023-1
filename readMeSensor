@@ -8,6 +8,8 @@ Dersom sensor velger å pushe sitt forkede repo til en annen branch enn main-bra
 
 Hvis sensor skal bruke sin egen bucket kan sensor endre dette ved å endre bucket_name i app.py koden
 
+NB: navnet på branchen for testing utenfor main er "test" bruk git checkout  test for å akksesere test branchen.
+
 Oppgave 3B)
 Først må sensor endre dynamisk tjenestenavn service_name. Erstatt den hardkodede verdien med referanse til variabelen ‘var.kandidatnummer’.
 Dersom sensor skal bruke sin egen docker bildekonfigurasjon så må sensoroppdatere Docker-bildeinformasjonen i GitHub Actions-workflow-filen for å matche deres Docker-bildekonfigurasjon inne  F eks «IMAGE_URI=244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037» med sin egen verdier.
