@@ -1,0 +1,15 @@
+Oppgave 1A:
+Først må sensor lage en fork av ditt repository ved å klikke på «Fork» øverst til høyre på GitHub-siden i prosjektet mitt.
+
+Deretter må sensor gå til sitt forkede repository og gå til «settings», deretter «Secrets». Legg til nødvendige secrets, spesielt de som brukes av GitHub Actions arbeidsflyten. (f.eks AWS:_ACCESS_KEY_ID, AWS_SECRET_ACESS_KEY, BUCKET_NAME).
+
+For å deretter trigge Github Actions workflow kan sensor gjøre en endring (filendring) i sitt forkede repository. (Kan være hva som helst. For eksempel så pleier jeg å bare legge inn en kommentar i app.py). Deretter kan sensor gjøre en push til main-branchen. Dette bør få GitHub Actions til å bygge og deploye Lambda-funksjonen i sensor sin egen konto. 
+Dersom sensor velger å pushe sitt forkede repo til en annen branch enn main-branchen vil Actions workflow bare bygge lambda funksjonen.
+
+Hvis sensor skal bruke sin egen bucket kan sensor endre dette ved å endre bucket_name i app.py koden
+
+Oppgave 3B)
+Først må sensor endre dynamisk tjenestenavn service_name. Erstatt den hardkodede verdien med referanse til variabelen ‘var.kandidatnummer’.
+Dersom sensor skal bruke sin egen docker bildekonfigurasjon så må sensoroppdatere Docker-bildeinformasjonen i GitHub Actions-workflow-filen for å matche deres Docker-bildekonfigurasjon inne  F eks «IMAGE_URI=244530008913.dkr.ecr.eu-west-1.amazonaws.com/ecr_2037» med sin egen verdier.
+
+Tilpass også terraform-backend konfigurasjonen etter behov inne på main.tf.
