@@ -5,7 +5,7 @@ variable "kandidatnummer" {
 terraform {
   backend "s3" {
     bucket         = "bucket2037"
-    key            = "eksamen_2023/infra/terraform.tfstate"
+    key            = "eksamen_2023/infra/terraforms.tfstate"
     region         = "eu-west-1"
     encrypt        = true
   }
